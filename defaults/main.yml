@@ -29,5 +29,13 @@ docker_yum_repo_enable_test: 0
 # A list of users who will be added to the docker group.
 docker_users: []
 
-# MTU for Docker bridge interface
-docker_bridge_interface_mtu: 1350
+docker_daemon_options:
+  # docker_bridge_interface_mtu
+  mtu: 1350
+
+  # Avoid overlapping with AWS network, see
+  # https://intento.atlassian.net/wiki/spaces/IN/pages/595919033/Docker+network+address+space+conflicting+with+aws+network
+  default-address-pools:
+    - base: 172.20.0.0/14
+      size: 21
+

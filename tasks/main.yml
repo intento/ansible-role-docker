@@ -25,9 +25,9 @@
     state: "{{ docker_package_state }}"
   notify: restart docker
 
-- name: Copy daemon.json
-  template:
-    src: daemon.json.j2
+- name: Write daemon.json
+  copy:
+    content: "{{ docker_daemon_options | to_nice_json }}"
     dest: /etc/docker/daemon.json
   register: daemon_json
 
