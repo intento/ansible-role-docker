@@ -25,18 +25,11 @@
     state: "{{ docker_package_state }}"
   notify: restart docker
 
-- name: Copy daemon.json
-  template:
-    src: daemon.json.j2
+- name: Write daemon.json
+  copy:
+    content: "{{ docker_daemon_options | to_nice_json }}"
     dest: /etc/docker/daemon.json
-  register: daemon_json
-
-- name: Restart Docker service if daemon.json changed
-  service:
-    name: docker
-    state: "restarted"
-    enabled: "{{ docker_service_enabled }}"
-  when: daemon_json.changed
+  notify: restart docker
 
 - name: Ensure Docker is started and enabled at boot.
   service:
